@@ -4,12 +4,14 @@ interface EventListPropTypes {
   eventDay: any;
   onClickAddEvent: () => void;
   onClickEventItem: (index: number) => void;
+  onRemoveEventItem: (index: number) => void;
 }
 
 const EventList: FC<EventListPropTypes> = ({
   eventDay,
-  onClickAddEvent = () => {},
-  onClickEventItem = () => {},
+  onClickAddEvent,
+  onClickEventItem,
+  onRemoveEventItem,
 }) => {
   return (
     <div className="event-list-wrapper">
@@ -36,12 +38,22 @@ const EventList: FC<EventListPropTypes> = ({
                 } ${data.meridiem.toLocaleUpperCase()}`}</span>
               </div>
 
-              <button>remove</button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onRemoveEventItem(index);
+                }}
+              >
+                remove
+              </button>
             </div>
           ))}
-          <button className="add-event-btn" onClick={onClickAddEvent}>
-            Add Event
-          </button>
+
+          {eventDay.length < 3 && (
+            <button className="add-event-btn" onClick={onClickAddEvent}>
+              Add Event
+            </button>
+          )}
         </div>
       )}
     </div>

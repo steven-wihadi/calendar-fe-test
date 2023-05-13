@@ -1,12 +1,17 @@
 import { FC, useEffect, useState } from "react";
 import { generateDate } from "./method";
 import "./style.scss";
+import { convertDateToString } from "../../utils/date";
 
 interface CalendarPropTypes {
+  allEvent: any;
   onClickDay?: (selectedDay: Date) => void;
 }
 
-const Calendar: FC<CalendarPropTypes> = ({ onClickDay = () => {} }) => {
+const Calendar: FC<CalendarPropTypes> = ({
+  onClickDay = () => {},
+  allEvent,
+}) => {
   const [days, setDays] = useState<any>([]);
   const [selectedDay, setSelectedDay] = useState<Date>(new Date());
 
@@ -49,6 +54,17 @@ const Calendar: FC<CalendarPropTypes> = ({ onClickDay = () => {} }) => {
     }
   };
 
+  const getWidthMarkEvent = (eventData: any) => {
+    switch (eventData.length) {
+      case 1:
+        return "70px";
+      case 2:
+        return "35px";
+      case 3:
+        return "23px";
+    }
+  };
+
   return (
     <div className="glob-calendar-comp">
       <table>
@@ -73,6 +89,23 @@ const Calendar: FC<CalendarPropTypes> = ({ onClickDay = () => {} }) => {
                   onClick={() => changeSelectedDay(day)}
                 >
                   <span className="day-text">{day.getDate()}</span>
+                  <div className="event-mark">
+                    {allEvent[convertDateToString(day)] &&
+                      allEvent[convertDateToString(day)].map(
+                        (eventData: any, index: number) => (
+                          <div
+                            key={index}
+                            className="event-mark-item"
+                            style={{
+                              width: getWidthMarkEvent(
+                                allEvent[convertDateToString(day)]
+                              ),
+                              background: eventData.color,
+                            }}
+                          />
+                        )
+                      )}
+                  </div>
                 </td>
               ))}
             </tr>

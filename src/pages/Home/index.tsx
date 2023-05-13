@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Calendar from "../../components/Calendar";
 import Modal from "../../components/Modal";
 import "./style.scss";
 import { makeOnlyNum } from "../../utils/number";
 import EventList from "./EventList";
+import { convertDateToString } from "../../utils/date";
 
 let indexFlagEvent = 0;
 let modalProcedure = "add";
 
 const Home = () => {
   const [selectedDay, setSelectedDay] = useState<Date>(new Date());
+  const [allEvent, setAllEvent] = useState({});
   const [eventDay, setEventDay] = useState<any>([]);
   const [isShowModalEvent, setIsShowModalEvent] = useState<boolean>(false);
   const [eventName, setEventName] = useState<string>("");
@@ -19,16 +21,11 @@ const Home = () => {
   const [email, setEmail] = useState<string>("");
   const [invitees, setInvitees] = useState<string[]>([]);
 
-  const convertDateToString = (date = selectedDay) => {
-    let result = "";
-
-    result += date.getDate();
-    const month = date.getMonth() + 1;
-    result += `-${month < 10 ? "0" + month : month}`;
-    result += `-${date.getFullYear()}`;
-
-    return result;
-  };
+  useEffect(() => {
+    onClickDay(selectedDay);
+    let eventList: any = localStorage.getItem("event");
+    setAllEvent(eventList ? JSON.parse(eventList) : {});
+  }, []);
 
   const onClickDay = (e: Date) => {
     setSelectedDay(e);
@@ -75,14 +72,12 @@ const Home = () => {
   };
 
   const onSubmit = () => {
-    const color = "red";
-    const event = {
+    const event: any = {
       eventName,
       inputHour,
       inputMinute,
       meridiem,
       invitees,
-      color,
     };
 
     let eventList: any = localStorage.getItem("event");
@@ -94,19 +89,33 @@ const Home = () => {
 
     switch (modalProcedure) {
       case "add":
-        if (!eventList[convertDateToString()]) {
-          eventList[convertDateToString()] = [];
+        if (!eventList[convertDateToString(selectedDay)]) {
+          eventList[convertDateToString(selectedDay)] = [];
         }
-        eventList[convertDateToString()].push(event);
+        switch (eventList[convertDateToString(selectedDay)].length) {
+          case 0:
+            event["color"] = "red";
+            break;
+          case 1:
+            event["color"] = "blue";
+            break;
+          case 2:
+            event["color"] = "yellow";
+            break;
+        }
+        eventList[convertDateToString(selectedDay)].push(event);
+        setAllEvent(eventList);
         break;
       case "edit":
-        eventList[convertDateToString()][indexFlagEvent] = event;
+        event["color"] =
+          eventList[convertDateToString(selectedDay)][indexFlagEvent].color;
+        eventList[convertDateToString(selectedDay)][indexFlagEvent] = event;
         break;
     }
 
     localStorage.setItem("event", JSON.stringify(eventList));
     setIsShowModalEvent(false);
-    setEventDay(eventList[convertDateToString()]);
+    setEventDay(eventList[convertDateToString(selectedDay)]);
   };
 
   const onClickEvent = (procedure: "edit" | "add" = "add", index = 0) => {
@@ -122,14 +131,25 @@ const Home = () => {
     setIsShowModalEvent(true);
   };
 
+  const onDeleteEvent = (index: number) => {
+    const temp: any = localStorage.getItem("event");
+    const eventList = JSON.parse(temp);
+
+    eventList[convertDateToString(selectedDay)].splice(index, 1);
+    localStorage.setItem("event", JSON.stringify(eventList));
+    setEventDay(eventList[convertDateToString(selectedDay)]);
+    setAllEvent(eventList);
+  };
+
   return (
     <div className="home-page-wrapper">
-      <Calendar onClickDay={onClickDay} />
+      <Calendar onClickDay={onClickDay} allEvent={allEvent} />
 
       <EventList
         eventDay={eventDay}
         onClickAddEvent={() => onClickEvent("add")}
         onClickEventItem={(index: number) => onClickEvent("edit", index)}
+        onRemoveEventItem={onDeleteEvent}
       />
 
       <Modal
@@ -137,7 +157,7 @@ const Home = () => {
         onClose={() => setIsShowModalEvent(false)}
       >
         <div className="event-form-wrapper">
-          <h3>Date {convertDateToString()}</h3>
+          <h3>Date {convertDateToString(selectedDay)}</h3>
 
           <div className="form-wrapper">
             <label>Event Name</label>
@@ -197,7 +217,7 @@ const Home = () => {
               onClick={onSubmit}
               disabled={!eventName || !inputHour || !inputMinute}
             >
-              {modalProcedure} event
+              {modalProcedure === "add" ? "Add Event" : "Apply Change"}
             </button>
           </div>
         </div>

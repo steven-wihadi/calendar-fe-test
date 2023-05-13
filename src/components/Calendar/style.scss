@@ -39,6 +39,20 @@
         font-weight: bold;
       }
     }
+
+    .event-mark {
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      top: 0px;
+      display: flex;
+      justify-content: space-between;
+
+      .event-mark-item {
+        height: 72px;
+        opacity: .2;
+      }
+    }
   }
 
   .day-text {
