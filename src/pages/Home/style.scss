@@ -5,17 +5,17 @@
 
 	.empty-event {
 		margin-top: 20px;
-	}
 
-	span {
-		display: block;
-		text-align: center;
-		font-size: 14px;
-	}
-
-	button {
-		margin: 14px auto;
-		display: block;
+        span {
+            display: block;
+            text-align: center;
+            font-size: 14px;
+        }
+    
+        button {
+            margin: 14px auto;
+            display: block;
+        }
 	}
 }
 
@@ -58,10 +58,13 @@
         }
 
         .invitees-list {
-            width: 272px;
+            width: 264px;
             margin-top: 4px;
             height: 150px;
             overflow: auto;
+            scrollbar-width: thin;
+            padding-right: 8px;
+            border: 1px solid #dfdfdf;
         }
 
         .invitees-item {
@@ -84,5 +87,59 @@
         margin-top: 20px;
         width: 100%;
         padding: 6px;
+        text-transform: capitalize;
+    }
+}
+
+.event-list {
+    .event-item {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        padding: 12px;
+        box-sizing: border-box;
+        cursor: pointer;
+
+        &:hover {
+            background-color: rgb(241, 241, 241);
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background: red;
+            border-radius: 100%;
+        }
+
+        .event-info {
+            margin-left: 8px;
+        }
+
+        .event-name {
+            text-align: left;
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .event-time {
+            display: block;
+            font-size: 12px;
+            color: gray;
+        }
+
+        button {
+            border: unset;
+            background: #fbcdcd;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: auto;
+        }
+    }
+
+    .add-event-btn {
+        margin-top: 14px;
+        display: block;
+        margin-left: auto;
     }
 }

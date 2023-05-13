@@ -43,8 +43,10 @@ const Calendar: FC<CalendarPropTypes> = ({ onClickDay = () => {} }) => {
   };
 
   const changeSelectedDay = (day: Date) => {
-    setSelectedDay(day);
-    onClickDay(day);
+    if (day.getMonth() === new Date().getMonth()) {
+      setSelectedDay(day);
+      onClickDay(day);
+    }
   };
 
   return (
