@@ -1,0 +1,41 @@
+.glob-calendar-comp {
+  table {
+    border-spacing: 0;
+    border-collapse: collapse;
+  }
+
+  th {
+    font-size: 12px;
+    padding: 8px 4px;
+  }
+
+  td {
+    width: 60px;
+    height: 60px;
+    border: 1px solid gray;
+    position: relative;
+
+    &.blurred {
+      color: #cacaca;
+      border: 1px solid #d0d0d0;
+    }
+
+    &.today {
+      .day-text {
+        background: gray;
+        height: 18px;
+        width: 18px;
+        color: white;
+        text-align: center;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .day-text {
+    font-size: 10px;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+  }
+}
