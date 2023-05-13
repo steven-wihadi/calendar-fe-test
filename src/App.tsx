@@ -1,10 +1,10 @@
 import "./App.scss";
-import Calendar from "./components/Calendar";
+import Home from "./pages/Home";
 
 function App() {
   return (
     <div className="App">
-      <Calendar />
+      <Home />
     </div>
   );
 }

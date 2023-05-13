@@ -1,0 +1,88 @@
+.event-list-wrapper {
+	margin-top: 10px;
+	border-top: 1px solid gray;
+	padding: 8px;
+
+	.empty-event {
+		margin-top: 20px;
+	}
+
+	span {
+		display: block;
+		text-align: center;
+		font-size: 14px;
+	}
+
+	button {
+		margin: 14px auto;
+		display: block;
+	}
+}
+
+.event-form-wrapper {
+    h3 {
+        font-size: 16px;
+        color: #4a4444;
+    }
+
+    label {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 4px;
+        margin-top: 16px;
+    }
+
+    .input-time-wrapper {
+        display: flex;
+        align-items: center;
+
+        input {
+            width: 60px;
+        }
+
+        .time-separator {
+            margin: 0px 6px;
+        }
+
+        select {
+            margin-left: 12px;
+            border: unset;
+            padding: 4px 8px;
+            font-weight: bold;
+        }
+    }
+
+    .invitees-wrapper {
+        button {
+            margin-left: 6px;
+        }
+
+        .invitees-list {
+            width: 272px;
+            margin-top: 4px;
+            height: 150px;
+            overflow: auto;
+        }
+
+        .invitees-item {
+            padding: 4px;
+            font-size: 14px;
+            border-bottom: 1px solid gray;
+            display: flex;
+            justify-content: space-between;
+
+            button {
+                border: unset;
+                background: #fbcdcd;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .submit-button {
+        margin-top: 20px;
+        width: 100%;
+        padding: 6px;
+    }
+}

@@ -1,9 +1,14 @@
-import { useEffect, useState } from "react";
-import "./style.scss";
+import { FC, useEffect, useState } from "react";
 import { generateDate } from "./method";
+import "./style.scss";
 
-const Calendar = () => {
+interface CalendarPropTypes {
+  onClickDay?: (selectedDay: Date) => void;
+}
+
+const Calendar: FC<CalendarPropTypes> = ({ onClickDay = () => {} }) => {
   const [days, setDays] = useState<any>([]);
+  const [selectedDay, setSelectedDay] = useState<Date>(new Date());
 
   useEffect(() => {
     getDaysData();
@@ -23,11 +28,23 @@ const Calendar = () => {
   const getDayClassStyle = (day: Date) => {
     if (day.getMonth() !== new Date().getMonth()) {
       return "blurred";
-    }
+    } else {
+      let className = "";
 
-    if (day.getDate() === new Date().getDate()) {
-      return "today";
+      if (day.getDate() === new Date().getDate()) {
+        className += "today";
+      }
+      if (day.getDate() === selectedDay.getDate()) {
+        className += " selected";
+      }
+
+      return className;
     }
+  };
+
+  const changeSelectedDay = (day: Date) => {
+    setSelectedDay(day);
+    onClickDay(day);
   };
 
   return (
@@ -48,7 +65,11 @@ const Calendar = () => {
           {days.map((weeks: Date[], weeks_index: number) => (
             <tr key={`week-${weeks_index}`}>
               {weeks.map((day: Date, day_index: number) => (
-                <td key={`week-${day_index}`} className={getDayClassStyle(day)}>
+                <td
+                  key={`week-${day_index}`}
+                  className={getDayClassStyle(day)}
+                  onClick={() => changeSelectedDay(day)}
+                >
                   <span className="day-text">{day.getDate()}</span>
                 </td>
               ))}
